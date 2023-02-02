@@ -14,7 +14,7 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var room_name ="Donation Room";
-Total ="";
+Total =0;
 Money1=0;
 function getData() {
       firebase.database().ref("/" + room_name).on('value', function (snapshot) {
@@ -32,6 +32,8 @@ function getData() {
                         name1 = amount_data['name'];
                         
                         Money = amount_data['amount'];
+                        Total = Total+Number(Money)
+
                         nameHTML = "<h4>" + name1 + "<img src='tick.png' class='user_tick'></h4>";
                         amountHTML = "<h4 class='message_h4'>" +"$ "+ Money + "</h4>"
                         localStorage.setItem("storage2",Money);
@@ -41,7 +43,7 @@ function getData() {
                   }
             });
       });
-     
+     document.getElementById("Total").innerHTML = Total;
 }
 getData();
 function logout() {
@@ -51,15 +53,17 @@ function logout() {
       
 }
 function confirm() {
-      total=localStorage.getItem("storage2");
-     
-      Total = document.getElementById("output").value;
+
+      localStorage.getItem("storage2");
+      
+
+   
       var amount = document.getElementById("amount").value;
       if(amount!=""){
       var room_username = localStorage.getItem("storage");
       firebase.database().ref(room_name).push({ name: room_username, amount:amount});
       document.getElementById("amount").value = "";
-      document.getElementById("Total").innerHTML = "$"+total;
+      document.getElementById("Total").innerHTML = "$"+Total;
 }
 }
 
